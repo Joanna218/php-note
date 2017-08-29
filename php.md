@@ -197,7 +197,7 @@ TRUE or FALSE(不區分大小寫)
 
 * 強制轉型
 
-[強轉](http://php.net/manual/zh/language.types.type-juggling.php#language.types.typecasting)
+    [強轉](http://php.net/manual/zh/language.types.type-juggling.php#language.types.typecasting)
 
     加上前綴字
     - (int), (integer) 轉換成integer
