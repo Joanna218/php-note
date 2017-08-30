@@ -4,6 +4,12 @@
 [PSR-2](http://www.php-fig.org/psr/psr-2/)  
 [PSR coding style簡讀版](http://oomusou.io/php/php-psr2/)
 
+Install phpcs for PSR check
+
+        pear install PHP_CodeSniffer
+
+Install vscode extension: phpcs
+
 ## **Index**
 
 1. [Getting Start](#Getting&nbsp;Start)
@@ -34,7 +40,7 @@
 * PHP在輸出時會自動刪除?>後的一個換行      
 [Note: A Note on Line Feeds](http://php.net/manual/en/tutorial.firstpage.php)
 
-**※在PSR-2標準中，PHP標籤PHP必須使用\<?php ?>或\<?= ?>，不可以使用其他標籤。若PHP不包含HTML，則不使用結束標籤 ?>**
+    **※在PSR-2標準中，PHP標籤PHP必須使用\<?php ?>或\<?= ?>，不可以使用其他標籤。若PHP不包含HTML，則不使用結束標籤 ?>**
 
 ### PHP運用領域
 * WEB: 最常用也是主要的應用處，需要PHP編譯器、伺服器和瀏覽器。
@@ -143,45 +149,20 @@
 
 ### 偽型別(pseudo-types):
 
-用於指示參數可以使用的類型或值(非定義)
+* 用於指示參數可以使用的類型或值(非定義)
 
-* mixed (參數可以接受多種類型)
-* number (參數接受integer或float)
-* callback (參數接受callback, PHP5.4後使用callable)
-* array | object (參數接受array或object)
-* void (不接受參數)
-* $... (接受任意個參數)
-
-
-### boolean
-
-TRUE or FALSE(不區分大小寫)
-
-以下值轉換成boolean時默認為false:
-
-* false
-* 0
-* 0.0
-* "0"
-* 空字串, 空陣列
-* NULL
-
-其它值都會默認為true(包含所有resource, NAN)
-
-
-### integer
-
-### float(double)
-
-### string
-
-
+    - mixed (參數可以接受多種類型)
+    - number (參數接受integer或float)
+    - callback (參數接受callback, PHP5.4後使用callable)
+    - array | object (參數接受array或object)
+    - void (不接受參數)
+    - $... (接受任意個參數)
 
 ### 查驗型別
 
 * var_dump()
 
-    >void var_dump ( mixed $expression [, mixed $... ] )   
+    > void var_dump ( mixed $expression [, mixed $... ] )   
 
     回傳值和型別
 
@@ -228,3 +209,167 @@ TRUE or FALSE(不區分大小寫)
     PHP\_INT\_MAX = 2147483647 (PHP 5.0.5+)
 
 
+### boolean
+
+* TRUE or FALSE(不區分大小寫)
+
+* 以下值轉換成boolean時默認為false:
+
+    - false
+    - 0
+    - 0.0
+    - "0"
+    - 空字串, 空陣列
+    - NULL
+
+    其它值都會默認為true(包含所有resource, NAN)
+
+
+### integer
+
+* $a = 1234; (十進制)
+* $a = -123; (負數)
+* $a = 0123; (八進制。PHP 7+非法數字會parse error，舊版則是直接忽略包含非法數字及之後的字)
+* $a = 0x1A; (十六進制)
+* $a = 0b11111111 (二進制，PHP 5.4+)
+
+* 整數範圍
+
+    - PHP\_INT\_SIZE (integer byte size)      
+    - PHP\_INT\_MAX (integer 最大值，PHP4.4.0 & PHP5.0.5+)  
+    - PHP\_INT\_MIN (integer 最小值，PHP7.0+)     
+    - Windows PHP 7.0之前的版本只有32位元，所以PHP\_INT\_SIZE = 4
+
+* 整數運算或給值超過int範圍，會return float
+
+* 運算結果不為int時，return float。需要整數可以用強制轉型或 [round()](http://php.net/manual/zh/function.round.php) 四捨五入，round()不填第二個參數表示四捨五入到整數位，PHP5.3+引入mode參數。
+
+
+### float(double)
+
+* IEEE 754 雙精度格式，因此比較浮點數可能會有誤差。
+* $a = 1.234;
+* $a = 1.2e3;
+* $a = 7E-10;
+
+* NAN代表浮點數運算中未定義或無法表達的值，var\_dump(NAN) = float(NAN)，可用is\_NAN()來檢查。
+
+### string
+
+[PHP string](http://php.net/manual/zh/language.types.string.php)
+
+* PHP string僅支援256字集，不支援Unicode
+* PHP 7.0+ 64bits version，對string長度沒有特別限制，其它版本則有2147483647 bytes(約2GB)的限制。
+
+* 單引號 $str = 'Hello';
+    - 單引號中的特殊字元及變數不會被轉換
+
+* 雙引號 $str = "Hello";
+    - 雙引號中的特殊字元及變數會被轉換
+
+* Heredoc結構
+
+* Nowdoc結構(PHP 5.3+)
+
+* 字串連接用 . (dot)
+
+### array
+
+[PHP array](http://php.net/manual/zh/language.types.array.php)
+
+* PHP的array實際上是種ordered map，有關聯性的keys和values，可以當作array, list, hash table, dictionary, collection, stack, queue...等結構來使用。
+
+* 寫法
+
+        $array = array(
+            "foo" => "bar",
+            "bar" => "foo",
+        );
+
+    PHP 5.4 + 可以使用
+
+        $array = [
+            "foo" => "bar",
+            "bar" => "foo",
+        ];
+
+* key 可以是int或string，但會有一些自動轉換
+
+    - 如果字串是合法的十進位數字會被轉成數字存，"1"轉成1，"01"不會被轉。
+    - 浮點數只會存整數部分
+    - true, false會被轉成1, 0
+    - Null 轉成 ""
+    - 重複key的話，後面的會覆蓋前面的。
+    - 沒有給key的話，會取當前最大的整數index+1當作key(初始為0)，當然如果這個key有重複，前面的值就會被蓋掉。
+
+* $array['foo'] 或 $array{'foo'} 都可以用來存取值，取得未定義的key-value會得到null。
+
+* 新增/修改
+
+    - $array[key] = value; (新增一筆key-value)
+    - $array[] = value; (此時會取當前最大的整數index+1當作key)
+    - unset($array[key]) (刪除某個key-value)
+    - unset($array) (刪除全部的key-value)
+    - unset()並不會重建index，所以再$array[] = value;後，index仍然會從之前的key中找最大值。
+    - array_values($array) 重建index，這時index就會再從0開始。
+
+* array_diff()
+
+    > array array_diff ( array $array1 , array $array2 [, array $... ] )
+
+    可以return所有在array1中但不在其它array中的值(不比較key，且保留原key)。
+
+* array 運算
+
+    [array operators](http://php.net/manual/zh/language.operators.array.php)
+
+    - $arr1 == $arr2 (若兩邊有相同的key-value，則return true)
+    - $arr1 === $arr2 (若兩邊有相同的key-value，且順序型態相同，return true)
+    - $arr1 != $arr2 或 $arr1 <> $arr2 (若兩邊不等於return true)
+    - $arr1 !== $arr2 (兩邊不全等return true)
+    - $arr1 + $arr2 (聯集，直接把$arr2內容加到$arr1後面，如果key重複只會保留$arr1的)
+
+* [array function](http://php.net/manual/zh/ref.array.php)
+
+* & 符號可以用來call by reference
+
+        $arr1 = array(2, 3);
+        $arr2 = $arr1;
+        $arr2[] = 4; // $arr2 is changed,
+                    // $arr1 is still array(2, 3)
+                    
+        $arr3 = &$arr1;
+        $arr3[] = 4; // now $arr1 and $arr3 are the same
+
+* 迴圈中改值
+
+    在PHP 5+，foreach開始時會自動從array的第一個key開始，舊版需要先reset()。      
+    因為迴圈結束之後最後一個元素的$value reference仍然存在，建議用unset()來刪除。
+     
+
+        $arr = array(1, 2, 3, 4);
+        foreach ($arr as &$value) {
+            $value = $value * 2;
+        }
+        // $arr is now array(2, 4, 6, 8)
+        unset($value);
+
+* 使用list()來取值多維陣列(PHP 5.5.0+)
+
+        $array = [
+            [1, 2],
+            [3, 4],
+        ];
+
+        foreach ($array as list($a, $b)) {
+            // $a contains the first element of the nested array,
+            // and $b contains the second element.
+            echo "A: $a; B: $b\n";
+        }
+
+    Output:
+
+        A: 1; B: 2
+        A: 3; B: 4
+
+### object
