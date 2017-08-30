@@ -309,9 +309,9 @@ Install vscode extension: phpcs
     - $array[key] = value; (新增一筆key-value)
     - $array[] = value; (此時會取當前最大的整數index+1當作key)
     - unset($array[key]) (刪除某個key-value)
-    - unset($array) (刪除全部的key-value)
-    - unset()並不會重建index，所以再$array[] = value;後，index仍然會從之前的key中找最大值。
-    - array_values($array) 重建index，這時index就會再從0開始。
+    - unset($array) (刪除該陣列)
+    - unset($array[key])並不會重建index，所以再$array[] = value;後，index仍然會從之前的key中找最大值。
+    - 可以重新assign陣列，就會重建index，這時index就會再從0開始。
 
 * array_diff()
 
@@ -372,4 +372,31 @@ Install vscode extension: phpcs
         A: 1; B: 2
         A: 3; B: 4
 
+* 輸出array內容 print_r($array);
+
 ### object
+
+[PHP object](http://php.net/manual/zh/language.types.object.php)        
+[PHP OOP](http://php.net/manual/en/language.oop5.php)
+
+* Create Object and Instance
+
+        class foo
+        {
+            function do_foo()
+            {
+                echo "Doing foo."; 
+            }
+        }
+
+        $bar = new foo;
+        $bar->do_foo();
+
+* 物件轉換
+
+    - 物件轉物件不會有任何變化
+    - 純量型別變數轉物件會實體化一個物件並且包含成員變數scalar存值。
+        
+            $obj = (object) 'ciao';
+            echo $obj->scalar;  // outputs 'ciao'
+
