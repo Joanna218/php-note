@@ -321,6 +321,8 @@ Install vscode extension: phpcs
 
     可以return所有在array1中但不在其它array中的值(不比較key，且保留原key)。
 
+* count($array) (計算$array element 個數)
+
 * array 運算
 
     [array operators](http://php.net/manual/zh/language.operators.array.php)
