@@ -273,6 +273,8 @@ Install vscode extension: phpcs
 
 * 字串連接用 . (dot)
 
+* 取得字串中的
+
 ### array
 
 [PHP array](http://php.net/manual/zh/language.types.array.php)
@@ -295,14 +297,14 @@ Install vscode extension: phpcs
 
 * key 可以是int或string，但會有一些自動轉換
 
-    - 如果字串是合法的十進位數字會被轉成數字存，"1"轉成1，"01"不會被轉。
-    - 浮點數只會存整數部分
-    - true, false會被轉成1, 0
-    - Null 轉成 ""
+    - 如果字串是合法的十進位數字會被轉成int存，"1"轉成1，"01"不會被轉。
+    - 浮點數只會存整數部分(int)
+    - true, false會被轉成1, 0(int)
+    - Null 轉成 "" (string)
     - 重複key的話，後面的會覆蓋前面的。
     - 沒有給key的話，會取當前最大的整數index+1當作key(初始為0)，當然如果這個key有重複，前面的值就會被蓋掉。
 
-* $array['foo'] 或 $array{'foo'} 都可以用來存取值，取得未定義的key-value會得到null。
+* $array['foo'] 或 $array{'foo'} 都可以用來存取值，取得未定義的key-value會得到null並且有警告。
 
 * 新增/修改
 
@@ -381,6 +383,8 @@ Install vscode extension: phpcs
 
 * Create Object and Instance
 
+    使用 -> 存取物件中的屬性
+
         class foo
         {
             function do_foo()
@@ -400,3 +404,75 @@ Install vscode extension: phpcs
             $obj = (object) 'ciao';
             echo $obj->scalar;  // outputs 'ciao'
 
+    - array轉物件會自動生成一個PHP基類的實例stdClass Object，並且包含array中的所有key(property)及對應值，但只能直接對string型態的key(property)存取值，int型態的需要用迴圈存取。
+
+            $arr = [
+                'a',
+                'b',
+                'c',
+                'x' => 'x1',
+                "10" => 'ten',
+            ];
+            print_r($arr);
+            $obj = (object)$arr; //array convert to object
+            print_r($obj);
+
+        Output:
+
+            Array
+            (
+                [0] => a
+                [1] => b
+                [2] => c
+                [x] => x1
+                [10] => ten
+            )
+            stdClass Object
+            (
+                [0] => a
+                [1] => b
+                [2] => c
+                [x] => x1
+                [10] => ten
+            )
+
+        $obj->x可以得到'x1'，其它的則要使用迴圈
+
+    - (object)null會得到stdClass Object()
+
+* 關於stdClass，是PHP預定義的基類之一，預設沒有內容，可以實體化並且定義變數。
+
+
+### callable
+
+[PHP callable](http://php.net/manual/zh/language.types.callable.php)
+
+* call\_user\_func() 可以用來傳遞callable function
+
+* 可以將函數用string形式傳遞
+
+* object的method可以用array傳遞:　array($object, 'method')
+
+* static method傳遞: 'Class::method'
+
+* 父層method傳遞: array('ChildClass', 'parent::method')
+
+### resource
+
+[PHP resource](http://php.net/manual/zh/language.types.resource.php)
+
+* 用於外部資源，一個資源通常會有專門的函數來建立和使用。
+
+* 大部分時候Zend引擎會自動檢測不再被使用的resource，並且回收釋放。
+
+### NULL
+
+* NULL不區分大小寫
+
+* 以下情況NULL
+
+    - 直接assign NULL
+    - 未給值
+    - unset()
+
+* is_null() 可用來檢測是否NULL
