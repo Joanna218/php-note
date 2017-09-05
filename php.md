@@ -17,6 +17,8 @@ Install vscode extension: phpcs
 2. [Useful Script](#useful-script)
 3. [變數型別](#變數型別)
 4. [echo vs print vs print_r](#echo-vs-print-vs-print_r)
+5. [isset vs empty vs is_null](#isset-vs-empty-vs-is_null)
+6. [常用函數](#常用函數)
 
 ## Getting Start
 
@@ -474,7 +476,7 @@ Install vscode extension: phpcs
 
 * is_null() 可用來檢測是否NULL
 
-### echo vs print vs print_r
+## echo vs print vs print_r
 
 X | echo | print() | print_r()
 ---------|---------|----------|---------
@@ -484,3 +486,71 @@ X | echo | print() | print_r()
 回傳值 | 無 | int(1) | bool(true/false)
 
 * print_r() 如果加上第二個參數true，則不會輸出而是return函數處理完的值。
+
+## isset vs empty vs is_null
+
+* 手冊說明
+
+  [isset()官方說明](http://php.net/manual/en/function.isset.php)    
+  [empty()官方說明](http://php.net/manual/en/function.empty.php)    
+  [is_null()官方說明](http://php.net/manual/en/function.is-null.php)    
+
+    + isset(): 檢查變數是否存在且不為null (可帶多個參數)    
+    + empty(): 檢查變數值是否為空    
+    + is_null(): 檢查變數值是否為null    
+
+* 實驗結果
+
+  (PHP 5.6.31)
+
+  為統一輸出避免顯示被自動轉型，所以我用var_dump()來處理輸出
+
+  輸出執行下方程式碼
+
+        echo var_dump($var);
+        echo var_dump(isset($var));
+        echo var_dump(empty($var));
+        echo var_dump(is_null($var));
+
+    + 不宣告$var
+        - $var出現未定義變數警告訊息，並回傳NULL
+        - isset()回傳bool(false)
+        - empty()回傳bool(true)
+        - is_null()出現未定義變數警告訊息，並回傳bool(true)
+
+    + 宣告$var = null;
+        - $var輸出得到NULL
+        - isset()回傳bool(false)
+        - empty()回傳bool(true)
+        - is_null()回傳bool(true)
+
+    + 宣告$var = 0;
+        - $var輸出得到int(0)
+        - isset()回傳bool(true)
+        - empty()回傳bool(true)
+        - is_null()回傳bool(false)
+
+    + 宣告$var = "0";
+        - $var輸出得到string(1) "0"
+        - isset()回傳bool(true)
+        - empty()回傳bool(true)
+        - is_null()回傳bool(false)
+
+    + 宣告$var = "";
+        - $var輸出得到string(0) ""
+        - isset()回傳bool(true)
+        - empty()回傳bool(true)
+        - is_null()回傳bool(false)
+
+    + 宣告$var = 1;
+        - $var輸出得到int(1)
+        - isset()回傳bool(true)
+        - empty()回傳bool(false)
+        - is_null()回傳bool(false)
+
+* 結論
+    + isset()只要變數存在不為null都會回傳true
+    + empty()會把null, 0, "0", 空字串, 空陣列...等空集合的值都視為空值，回傳true
+    + is_null()只在變數不存在或值為null時，回傳true
+
+## 常用函數
