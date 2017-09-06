@@ -19,6 +19,7 @@ Install vscode extension: phpcs
 4. [echo vs print vs print_r](#echo-vs-print-vs-print_r)
 5. [isset vs empty vs is_null](#isset-vs-empty-vs-is_null)
 6. [常用函數](#常用函數)
+7. [變數範圍](#變數範圍)
 
 ## Getting Start
 
@@ -554,3 +555,106 @@ X | echo | print() | print_r()
     + is_null()只在變數不存在或值為null時，回傳true
 
 ## 常用函數
+
+## 變數範圍
+
+* PHP的變數作用範圍(Scope)通常都只有小區域，尤其是當一個變數需要跨function內外處理的時候更需要注意。
+
+* 一般變數宣告後，可以在自身、include和require的檔案中作用，但不包括function內部。
+
+    + function內外的變數是分開的
+
+            $a = 5;
+            $b = 7;
+
+            function add()
+            {
+                $a ++;
+                echo $a + $b; // null
+            }
+
+            add();
+            var_dump($a, $b); // int(5) int(7)
+
+        輸出會出現警告訊息，因為$a和$b在add()內未定義值，於是結果會是null。
+
+    + 傳值進去function
+
+            $a = 5;
+            $b = 7;
+
+            function add($a, $b)
+            {
+                $a ++;
+                echo $a + $b; // 13
+            }
+
+            add($a, $b);
+            var_dump($a, $b); int(5) int(7)
+
+        這時我們定義兩個參數$a, $b給add()，並且把外面的$a, $b透過參數傳進add()內，得到$a + $b結果為13，但外頭的$a, $b仍然維持原值。
+
+    + 傳參考進去function
+
+            $a = 5;
+            $b = 7;
+
+            function add(&$a, &$b)
+            {
+                $a ++;
+                echo $a + $b; // 13
+            }
+
+            add($a, $b);
+            var_dump($a, $b); int(6) int(7)
+    
+        這時add()內的對於變數的操作，則會直接影響到外面(因為參考同一個變數操作)，外面的$a, $b值被更新。
+
+    + 使用global宣告
+
+            $a = 5;
+            $b = 7;
+
+            function add()
+            {
+                global $a, $b;
+                $a ++;
+                echo $a + $b; // 13
+            }
+
+            add();
+            var_dump($a, $b); int(6) int(7)
+
+        global關鍵字表示這裡宣告的變數將會參考外部全域的變數，是直接指向外部變數去操作，所以內外連動。
+
+    + 使用預設的$GLOBALS陣列來存取
+
+            $a = 5;
+            $b = 7;
+
+            function addGlobal()
+            {
+                $GLOBALS['a'] ++;
+                echo $GLOBALS['a'] + $GLOBALS['b']; // 13
+            }
+
+            addGlobal();
+            var_dump($a, $b); int(6) int(7)
+
+        $GLOBALS裡存放了許多預設的全域變數，包括用global宣告過的變數，而使用$GLOBALS['a']也會自動與$a做連動，不管是存取更動了哪一方的值，都相當於修改了兩邊。(等同於上面global用法)
+
+    + static宣告
+
+        使用static靜態宣告的變數，將會在程式執行前就分配記憶體空間，並且在程式執行結束後才釋放，並且不會因為多次呼叫而重置內容。
+
+            function add()
+            {
+                static $a = 0;
+                $a ++;
+                echo $a;
+            }
+            add(); // 1
+            add(); // 2
+
+
+
