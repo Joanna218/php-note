@@ -655,6 +655,3 @@ X | echo | print() | print_r()
             }
             add(); // 1
             add(); // 2
-
-
-
