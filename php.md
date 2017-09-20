@@ -3,7 +3,7 @@
 [PHP manual](http://php.net/manual/zh/index.php)    
 [PHP install](http://php.net/manual/zh/install.php)    
 [PSR-2](http://www.php-fig.org/psr/psr-2/)    
-[PSR coding style簡讀版](http://oomusou.io/php/php-psr2/)
+[PSR coding style簡讀版](http://oomusou.io/php/php-psr2/)    
 [逐步提昇PHP技術能力 - Coding Standard 與 FIG-PSR](http://ithelp.ithome.com.tw/articles/10136389)
 
 Install phpcs for PSR check
@@ -11,6 +11,13 @@ Install phpcs for PSR check
         pear install PHP_CodeSniffer
 
 Install vscode extension: phpcs
+
+---
+
+## 好文收集
+
+[逐步提昇PHP技術能力](http://ithelp.ithome.com.tw/users/20000108/ironman/690?page=1)    
+[PHP物件導向](http://ithelp.ithome.com.tw/search?search=PHP%E7%89%A9%E4%BB%B6%E5%B0%8E%E5%90%91&tab=article)
 
 ## **Index**
 
