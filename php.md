@@ -4,6 +4,7 @@
 [PHP install](http://php.net/manual/zh/install.php)    
 [PSR-2](http://www.php-fig.org/psr/psr-2/)    
 [PSR coding style簡讀版](http://oomusou.io/php/php-psr2/)
+[逐步提昇PHP技術能力 - Coding Standard 與 FIG-PSR](http://ithelp.ithome.com.tw/articles/10136389)
 
 Install phpcs for PSR check
 
@@ -273,7 +274,7 @@ Install vscode extension: phpcs
 
 * 字串連接用 . (dot)
 
-* 取得字串中的
+* 取得字串中的字元可以用$str[index]
 
 ### array
 
