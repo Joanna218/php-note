@@ -487,12 +487,14 @@ Install vscode extension: phpcs
 
 ## echo vs print vs print_r
 
-X | echo | print() | print_r()
+X | echo | print | print_r()
 ---------|---------|----------|---------
-型態 | 語句 | 函數 | 函數
+型態 | 語句 | 語句 | 函數
 接受參數 | 多個 | 一個 | 多個
 參數型態 | string, number | string, number | mixed
 回傳值 | 無 | int(1) | bool(true/false)
+
+* 雖然print不算是函數，但是也可以加上()使用，PHP中很多這樣奇怪的寫法，像是include, require...等。echo則一定不能有()
 
 * print_r() 如果加上第二個參數true，則不會輸出而是return函數處理完的值。
 
